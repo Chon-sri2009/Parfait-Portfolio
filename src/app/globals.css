@@ -93,12 +93,21 @@ section[id] {
 
 .ticker-track {
   width: max-content;
-  animation: ticker 28s linear infinite;
+  will-change: transform;
+  animation: ticker 50s linear infinite;
+}
+
+.ticker-track[data-playing="false"] {
+  animation-play-state: paused;
 }
 
 @keyframes ticker {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -191,6 +200,10 @@ section[id] {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+
+  .ticker-track[data-playing="true"] {
+    animation: ticker 50s linear infinite !important;
   }
 
   [data-glow-card],

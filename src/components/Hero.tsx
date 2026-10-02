@@ -1,21 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, Braces, BriefcaseBusiness, Database, GitBranch, Medal, Workflow } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Braces, BriefcaseBusiness, Database, GitBranch, Medal, Pause, Play, Workflow } from "lucide-react";
 import { capabilitiesData, profile } from "@/lib/data";
 import { renderCanvas } from "@/components/ui/canvas";
 import { Reveal } from "@/components/ui/reveal";
 import { useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
 
 const capabilityIcons = [Braces, Workflow, Database];
-const tickerText = "DESIGN FOR PEOPLE  ✳  ENGINEER FOR PURPOSE  ✳  BUILD WHAT MATTERS  ✳  ";
+const tickerText = "DESIGN FOR PEOPLE ✳ ENGINEER FOR PURPOSE ✳ BUILD WHAT MATTERS ✳";
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useHydratedReducedMotion();
+  const [tickerOverride, setTickerOverride] = useState<boolean | null>(null);
+  const tickerPlaying = tickerOverride ?? !reduceMotion;
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const portraitY = useTransform(scrollYProgress, [0, 1], [0, 125]);
 
@@ -109,10 +111,26 @@ export default function Hero() {
         </div>
       </section>
 
-      <div className="overflow-hidden border-y border-black/10 bg-lime-300 py-3 text-[#191621] dark:border-white/10" aria-hidden="true">
-        <div className="ticker-track font-display flex text-lg font-black uppercase tracking-[-0.02em] sm:text-2xl">
-          <span className="shrink-0 whitespace-nowrap">{tickerText}</span><span className="shrink-0 whitespace-nowrap">{tickerText}</span>
+      <div className="relative overflow-hidden border-y border-black/10 bg-lime-300 py-3 text-[#191621] dark:border-white/10">
+        <div className="ticker-track font-display flex text-lg font-black uppercase tracking-[-0.02em] sm:text-2xl" data-playing={tickerPlaying} aria-hidden="true">
+          {[0, 1].map((group) => (
+            <div key={group} className="flex shrink-0">
+              {Array.from({ length: 5 }, (_, index) => (
+                <span key={index} className="shrink-0 whitespace-nowrap px-4">{tickerText}</span>
+              ))}
+            </div>
+          ))}
         </div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-lime-300 via-lime-300/95 to-transparent" aria-hidden="true" />
+        <button
+          type="button"
+          onClick={() => setTickerOverride(!tickerPlaying)}
+          className="absolute right-3 top-1/2 z-10 inline-flex -translate-y-1/2 items-center gap-2 rounded-full bg-[#191621] px-3 py-2 text-xs font-bold text-lime-300 shadow-lg transition hover:bg-[#322b3c] sm:right-5"
+          aria-label={tickerPlaying ? "Pause scrolling text" : "Play scrolling text"}
+        >
+          {tickerPlaying ? <Pause className="size-3.5" aria-hidden="true" /> : <Play className="size-3.5" aria-hidden="true" />}
+          <span className="hidden sm:inline">{tickerPlaying ? "Pause" : "Play"}</span>
+        </button>
       </div>
 
       <section id="expertise" tabIndex={-1} aria-labelledby="expertise-title" className="relative px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
