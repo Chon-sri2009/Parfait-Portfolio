@@ -1,111 +1,146 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Terminal } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowDownRight, ArrowUpRight, Braces, BriefcaseBusiness, Database, GitBranch, Medal, Workflow } from "lucide-react";
+import { capabilitiesData, profile } from "@/lib/data";
+import { renderCanvas } from "@/components/ui/canvas";
+import { Reveal } from "@/components/ui/reveal";
+import { useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
+
+const capabilityIcons = [Braces, Workflow, Database];
+const tickerText = "DESIGN FOR PEOPLE  ✳  ENGINEER FOR PURPOSE  ✳  BUILD WHAT MATTERS  ✳  ";
 
 export default function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const reduceMotion = useHydratedReducedMotion();
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 125]);
+
+  useEffect(() => {
+    if (!heroRef.current || !canvasRef.current) return;
+    return renderCanvas(canvasRef.current, heroRef.current);
+  }, []);
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-50 dark:bg-slate-950 pt-20">
-      {/* Background grid */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] dark:bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)]"></div>
-        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-blue-500 dark:bg-purple-600 opacity-20 blur-[100px]"></div>
-      </div>
+    <>
+      <section ref={heroRef} id="home" tabIndex={-1} aria-labelledby="home-title" className="relative isolate overflow-hidden pt-32 sm:pt-40">
+        <div className="surface-grid pointer-events-none absolute inset-0 opacity-45" aria-hidden="true" />
+        <div className="pointer-events-none absolute -left-24 top-40 size-[420px] rounded-full bg-violet-500/12 blur-[120px] dark:bg-violet-500/20" aria-hidden="true" />
+        <div className="pointer-events-none absolute -right-24 top-20 size-[420px] rounded-full bg-lime-300/15 blur-[130px]" aria-hidden="true" />
+        <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-70" aria-hidden="true" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
+        <div className="relative mx-auto grid max-w-[1440px] items-center gap-14 px-5 pb-24 sm:px-8 sm:pb-28 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16 lg:px-12">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            initial={reduceMotion ? false : { opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-slate-800 text-blue-700 dark:text-cyan-400 text-sm font-semibold mb-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 dark:bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500 dark:bg-cyan-500"></span>
-              </span>
-              Available for New Projects
+            <div className="mb-8 flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase tracking-[0.22em] text-violet-700 dark:text-lime-300">
+              <span className="inline-block size-2 rounded-full bg-violet-600 shadow-[0_0_0_5px_rgba(109,61,244,0.12)] dark:bg-lime-300" aria-hidden="true" />
+              Developer portfolio <span className="text-slate-400 dark:text-zinc-600" aria-hidden="true">/</span> Thailand · 2026
             </div>
-            
-            <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight">
-              Engineering <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-cyan-400 dark:to-purple-500">
-                Enterprise Software
-              </span>
+
+            <h1 id="home-title" className="font-display max-w-[830px] text-[clamp(2.75rem,7.8vw,8rem)] font-bold leading-[0.88] tracking-[-0.075em]">
+              <span className="block">Mr.Chonlapol</span>
+              <span className="block text-violet-600 dark:text-lime-300">Srichayech<span className="text-[#191621] dark:text-white">.</span></span>
             </h1>
-            
-            <p className="text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-lg">
-              I build scalable, high-performance, and beautifully designed web applications that solve complex business problems.
+
+            <p className="font-display mt-9 max-w-[660px] text-[clamp(1.35rem,2.2vw,2rem)] font-medium leading-tight tracking-tight">
+              I build business software <span className="text-violet-600 dark:text-lime-300">with people in mind.</span>
             </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <motion.a 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href="#solutions" 
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 transition-colors shadow-lg shadow-blue-500/30"
-              >
-                View Solutions
-                <ArrowRight className="ml-2 -mr-1 w-5 h-5" />
-              </motion.a>
-              <motion.a 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                href="#contact" 
-                className="inline-flex items-center justify-center px-6 py-3 border-2 border-slate-200 dark:border-slate-800 text-base font-medium rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              >
-                Get in Touch
-              </motion.a>
+            <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg dark:text-zinc-400">
+              From messy requirements to thoughtful interfaces, I turn complex workflows into digital tools that feel clear, useful, and human.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <a href="#work" className="group inline-flex items-center justify-center gap-3 rounded-full bg-violet-600 px-7 py-4 text-sm font-bold text-white shadow-[0_20px_45px_rgba(109,61,244,0.25)] transition hover:-translate-y-1 hover:bg-violet-500 focus-visible:-translate-y-1 dark:bg-lime-300 dark:text-[#151218] dark:hover:bg-lime-200">
+                See my work <ArrowDownRight className="size-5 transition-transform group-hover:translate-x-1 group-hover:translate-y-1" aria-hidden="true" />
+              </a>
+              <a href="#award" className="inline-flex items-center justify-center gap-3 rounded-full border border-black/15 bg-white/50 px-7 py-4 text-sm font-bold transition hover:-translate-y-1 hover:border-violet-500 focus-visible:-translate-y-1 dark:border-white/20 dark:bg-white/5 dark:hover:border-lime-300">
+                The WorldSkills story <Medal className="size-4 text-amber-600 dark:text-amber-300" aria-hidden="true" />
+              </a>
+            </div>
+
+            <div className="mt-11 flex items-center gap-5 border-t border-black/10 pt-5 dark:border-white/10">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-zinc-500">Find me online</p>
+              <a href="https://github.com/Chon-sri2009/" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 text-sm font-semibold hover:text-violet-700 dark:hover:text-lime-300" aria-label="Chonlapol on GitHub (opens in a new tab)">
+                <GitBranch className="size-4" aria-hidden="true" /> GitHub <ArrowUpRight className="size-3 opacity-60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+              </a>
+              <a href="https://www.linkedin.com/in/chonlapol-srichayech-40a802381/" target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 text-sm font-semibold hover:text-violet-700 dark:hover:text-lime-300" aria-label="Chonlapol on LinkedIn (opens in a new tab)">
+                <BriefcaseBusiness className="size-4" aria-hidden="true" /> LinkedIn <ArrowUpRight className="size-3 opacity-60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+              </a>
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="relative hidden lg:block"
-          >
-            {/* Floating abstract tech elements */}
-            <motion.div 
-              animate={{ y: [-10, 10, -10] }}
-              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-              className="relative w-full aspect-square max-w-md mx-auto"
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-indigo-50 dark:from-slate-800 dark:to-slate-900 rounded-3xl shadow-2xl border border-white/50 dark:border-slate-700/50 backdrop-blur-3xl transform rotate-3 flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 opacity-20 dark:opacity-40 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-400 via-transparent to-transparent"></div>
-                <Terminal className="w-32 h-32 text-blue-500 dark:text-cyan-400 opacity-80" strokeWidth={1} />
-                
-                {/* Decorative floating cards */}
-                <motion.div 
-                  animate={{ x: [-5, 5, -5], y: [-5, 5, -5] }}
-                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                  className="absolute -right-8 top-12 bg-white dark:bg-slate-950 p-4 rounded-xl shadow-xl border border-gray-100 dark:border-slate-800"
-                >
-                  <div className="w-24 h-2 bg-gray-200 dark:bg-slate-800 rounded-full mb-2"></div>
-                  <div className="w-16 h-2 bg-blue-500 dark:bg-cyan-500 rounded-full"></div>
-                </motion.div>
-
-                <motion.div 
-                  animate={{ x: [5, -5, 5], y: [5, -5, 5] }}
-                  transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                  className="absolute -left-6 bottom-20 bg-white dark:bg-slate-950 p-4 rounded-xl shadow-xl border border-gray-100 dark:border-slate-800 flex items-center gap-3"
-                >
-                  <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  </div>
-                  <div>
-                    <div className="w-16 h-2 bg-gray-200 dark:bg-slate-800 rounded-full mb-2"></div>
-                    <div className="w-10 h-2 bg-gray-200 dark:bg-slate-800 rounded-full"></div>
-                  </div>
-                </motion.div>
-
-              </div>
-            </motion.div>
+          <motion.div className="relative mx-auto w-full max-w-[530px]" style={reduceMotion ? undefined : { y: portraitY }}>
+            <div className="absolute -inset-4 rotate-[5deg] rounded-[2.5rem] border-2 border-violet-500/35 dark:border-lime-300/35" aria-hidden="true" />
+            <div className="absolute -inset-4 -rotate-[4deg] rounded-[2.5rem] bg-violet-500/10 dark:bg-lime-300/8" aria-hidden="true" />
+            <figure className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#261e31] shadow-[0_40px_100px_rgba(24,13,44,0.32)]">
+              <Image
+                src={profile.portraitSrc}
+                alt="Chonlapol Srichayech holding his WorldSkills Thailand medal"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="scale-[1.16] object-cover object-[center_68%]"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#130e1c]/85 via-transparent to-[#130e1c]/10" aria-hidden="true" />
+              <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-7 text-white sm:p-9">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.23em] text-lime-300">WorldSkills Thailand</p>
+                  <p className="font-display mt-2 text-xl font-semibold sm:text-2xl">Regional podium · 2026</p>
+                </div>
+                <span className="font-display text-5xl font-bold tracking-[-0.08em] text-lime-300" aria-hidden="true">03</span>
+                <span className="sr-only">Third place.</span>
+              </figcaption>
+            </figure>
+            <div className="float-slow absolute -right-4 top-8 rounded-2xl border border-white/25 bg-[#191621] px-5 py-4 text-white shadow-2xl sm:-right-8 sm:top-12" aria-hidden="true">
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-lime-300">Achievement unlocked</p>
+              <p className="font-display mt-1 text-lg font-bold">3rd place ↗</p>
+            </div>
           </motion.div>
-          
+        </div>
+        <div className="relative mx-auto flex max-w-[1440px] items-center justify-between border-t border-black/10 px-5 py-5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 sm:px-8 lg:px-12 dark:border-white/10 dark:text-zinc-500">
+          <span>IT Software Solutions for Business</span>
+          <a href="#expertise" className="inline-flex items-center gap-2 hover:text-violet-700 dark:hover:text-lime-300">Scroll to explore <ArrowDownRight className="size-4" aria-hidden="true" /></a>
+        </div>
+      </section>
+
+      <div className="overflow-hidden border-y border-black/10 bg-lime-300 py-3 text-[#191621] dark:border-white/10" aria-hidden="true">
+        <div className="ticker-track font-display flex text-lg font-black uppercase tracking-[-0.02em] sm:text-2xl">
+          <span className="shrink-0 whitespace-nowrap">{tickerText}</span><span className="shrink-0 whitespace-nowrap">{tickerText}</span>
         </div>
       </div>
-    </section>
+
+      <section id="expertise" tabIndex={-1} aria-labelledby="expertise-title" className="relative px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+        <div className="mx-auto max-w-[1440px]">
+          <Reveal className="grid gap-7 lg:grid-cols-[0.65fr_1fr] lg:items-end">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-violet-700 dark:text-lime-300">01 / How I work</p>
+              <h2 id="expertise-title" className="font-display mt-5 max-w-xl text-[clamp(2.8rem,5.5vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.06em]">More than writing code<span className="text-violet-600 dark:text-lime-300">.</span></h2>
+            </div>
+            <p className="max-w-xl text-lg leading-8 text-slate-600 lg:justify-self-end dark:text-zinc-400">Good software starts with listening. I connect the business problem, the user journey, and the engineering needed to make an idea real.</p>
+          </Reveal>
+          <div className="mt-14 grid gap-4 md:grid-cols-3">
+            {capabilitiesData.map((item, index) => {
+              const Icon = capabilityIcons[index];
+              return (
+                <Reveal key={item.id} delay={index * 0.1} className="group relative overflow-hidden rounded-[1.5rem] border border-black/10 bg-white/55 p-7 transition hover:-translate-y-2 hover:border-violet-400/50 dark:border-white/10 dark:bg-white/[0.035] dark:hover:border-lime-300/40 sm:p-9">
+                  <span className="font-display absolute right-6 top-5 text-5xl font-black text-black/[0.055] dark:text-white/[0.055]" aria-hidden="true">{item.id}</span>
+                  <span className="grid size-12 place-items-center rounded-xl bg-violet-600/10 text-violet-700 dark:bg-lime-300/10 dark:text-lime-300"><Icon className="size-5" aria-hidden="true" /></span>
+                  <h3 className="font-display mt-12 text-2xl font-bold tracking-tight">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-zinc-400">{item.description}</p>
+                  <span className="mt-8 block h-px w-full bg-black/10 dark:bg-white/10" aria-hidden="true" />
+                  <span className="mt-4 block text-[11px] font-bold uppercase tracking-[0.2em] text-violet-700 dark:text-lime-300">0{index + 1} / 03</span>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

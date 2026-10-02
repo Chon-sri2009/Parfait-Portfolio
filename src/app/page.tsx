@@ -5,15 +5,19 @@ import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col w-full">
+    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-x-clip">
       <Hero />
-      <Projects />
       <Awards />
+      <Projects />
       <Contact />
-      
-      <footer className="py-8 text-center bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-sm">
-        <div className="max-w-7xl mx-auto px-4">
-          © {new Date().getFullYear()} Enterprise Solutions. All rights reserved.
+
+      <footer className="px-5 pb-10 pt-7 sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-5 border-t border-black/10 pt-7 text-xs font-semibold text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-white/10 dark:text-zinc-500">
+          <p>© {new Date().getFullYear()} Mr.Chonlapol Srichayech. Made with intention.</p>
+          <div className="flex flex-wrap items-center gap-5">
+            <span>IT Software Solutions for Business</span>
+            <a href="#home" className="transition hover:text-violet-700 dark:hover:text-lime-300">Back to top ↑</a>
+          </div>
         </div>
       </footer>
     </main>

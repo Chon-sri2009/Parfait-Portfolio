@@ -1,9 +1,20 @@
 "use client";
 
-import * as React from "react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { type ThemeProviderProps } from "next-themes/dist/types";
+import {
+  ThemeProvider as NextThemesProvider,
+  type ThemeProviderProps,
+} from "next-themes";
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+  return (
+    <NextThemesProvider
+      {...props}
+      scriptProps={{
+        ...props.scriptProps,
+        type: typeof window === "undefined" ? "text/javascript" : "text/plain",
+      }}
+    >
+      {children}
+    </NextThemesProvider>
+  );
 }

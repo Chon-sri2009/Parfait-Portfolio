@@ -1,47 +1,65 @@
-export const awardsData = [
+export const capabilitiesData = [
   {
-    id: 1,
-    title: "Best Enterprise Solution",
-    organization: "Tech Innovators Award",
-    year: "2023",
-    description: "Awarded for delivering a highly scalable enterprise SaaS platform that improved client productivity by 40%."
+    id: "01",
+    title: "Business analysis",
+    description: "Turning real operational needs into clear software requirements and useful workflows.",
   },
   {
-    id: 2,
-    title: "Top 10 B2B Software Startups",
-    organization: "Global Tech Review",
-    year: "2022",
-    description: "Recognized for building intuitive and secure B2B software solutions for financial institutions."
+    id: "02",
+    title: "Solution design",
+    description: "Planning reliable systems, intuitive interfaces, and data structures that support the business.",
   },
   {
-    id: 3,
-    title: "Excellence in UX/UI Design",
-    organization: "Design & Dev Conference",
-    year: "2021",
-    description: "Received for creating cutting-edge, accessible, and user-centric interfaces for business applications."
-  }
+    id: "03",
+    title: "Full-stack delivery",
+    description: "Building complete web applications from the interface through application logic and data.",
+  },
 ];
 
 export const projectsData = [
   {
-    id: 1,
-    title: "Nexus Core - Cloud ERP",
-    description: "A comprehensive Cloud Enterprise Resource Planning system tailored for modern businesses, streamlining operations and finance.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL"],
-    link: "#",
+    id: "01",
+    category: "Enterprise operations",
+    title: "Nexus Core — Cloud ERP",
+    description:
+      "A comprehensive resource-planning system designed to bring operations, finance, and business reporting into one clear workspace.",
+    technologies: ["Next.js", "TypeScript", "Node.js", "PostgreSQL"],
+    modules: ["Operations", "Finance", "Reporting"],
+    accent: "indigo",
   },
   {
-    id: 2,
+    id: "02",
+    category: "Financial intelligence",
     title: "FinSecure Dashboard",
-    description: "A real-time financial analytics dashboard with bank-grade security and advanced data visualization.",
-    technologies: ["React", "Framer Motion", "tRPC", "Prisma"],
-    link: "#",
+    description:
+      "A focused analytics workspace for monitoring financial activity, surfacing key signals, and supporting faster decisions.",
+    technologies: ["React", "tRPC", "Prisma", "Data visualization"],
+    modules: ["Analytics", "Security", "Insights"],
+    accent: "cyan",
   },
   {
-    id: 3,
+    id: "03",
+    category: "Workflow automation",
     title: "OpsFlow Automator",
-    description: "An internal workflow automation tool that reduces manual operational tasks through AI-driven insights.",
+    description:
+      "A workflow system that organizes repetitive operational tasks and helps teams move work forward with less friction.",
     technologies: ["Vue.js", "Python", "FastAPI", "MongoDB"],
-    link: "#",
-  }
+    modules: ["Automation", "Approvals", "Tracking"],
+    accent: "amber",
+  },
 ];
+
+export const achievement = {
+  place: "3rd Place",
+  competition: "WorldSkills Thailand Regional Competition",
+  year: "2026",
+  category: "IT Software Solutions for Business",
+  description:
+    "A regional podium finish in the skill category focused on designing and delivering software for real business needs.",
+};
+
+export const profile = {
+  name: "Mr.Chonlapol Srichayech",
+  role: "Business software developer",
+  portraitSrc: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/chonlapol-worldskills-2026.jpeg`,
+};
