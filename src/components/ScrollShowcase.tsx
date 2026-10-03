@@ -50,7 +50,7 @@ export default function ScrollShowcase() {
             </div>
           </aside>
 
-          <div aria-hidden="true" className="min-w-0 flex-1 overflow-hidden p-4 sm:p-6 lg:p-8">
+          <div aria-hidden="true" className="flex min-w-0 flex-1 flex-col overflow-hidden p-4 sm:p-5 lg:p-6">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-300">Overview</p>
@@ -61,27 +61,27 @@ export default function ScrollShowcase() {
               </span>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-4">
+            <div className="mt-4 grid shrink-0 grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4">
               {[
                 { label: "Active workflows", value: "08", detail: "+2 this month" },
                 { label: "Open requests", value: "24", detail: "Across 4 teams" },
                 { label: "On-time delivery", value: "92%", detail: "Current cycle" },
               ].map((item) => (
-                <div key={item.label} className="rounded-xl border border-white/10 bg-white/[0.035] p-3 sm:rounded-2xl sm:p-5">
+                <div key={item.label} className={`rounded-xl border border-white/10 bg-white/[0.035] p-3 sm:rounded-2xl sm:p-4 ${item.label === "On-time delivery" ? "col-span-2 sm:col-span-1" : ""}`}>
                   <p className="truncate text-[9px] font-medium text-slate-400 sm:text-xs">{item.label}</p>
-                  <p className="font-display mt-2 text-xl font-semibold sm:mt-4 sm:text-3xl">{item.value}</p>
+                  <p className="font-display mt-2 text-xl font-semibold sm:mt-3 sm:text-3xl">{item.value}</p>
                   <p className="mt-1 hidden text-[10px] text-emerald-300 sm:block">{item.detail}</p>
                 </div>
               ))}
             </div>
 
-            <div className="mt-3 grid min-h-0 grid-cols-1 gap-3 sm:mt-4 sm:grid-cols-[1.35fr_0.65fr] sm:gap-4">
-              <div className="min-h-0 rounded-xl border border-white/10 bg-white/[0.035] p-3 sm:rounded-2xl sm:p-5">
+            <div className="mt-3 grid min-h-0 flex-1 grid-cols-1 gap-3 sm:mt-4 sm:grid-cols-[1.35fr_0.65fr] sm:gap-4">
+              <div className="flex min-h-0 flex-col rounded-xl border border-white/10 bg-white/[0.035] p-3 sm:rounded-2xl sm:p-4">
                 <div className="flex items-center justify-between">
                   <p className="text-[10px] font-semibold sm:text-sm">Workflow activity</p>
                   <ArrowUpRight className="size-4 text-indigo-300" />
                 </div>
-                <div className="mt-5 flex h-20 items-end gap-1.5 sm:mt-7 sm:h-32 sm:gap-2">
+                <div className="mt-4 flex min-h-[72px] flex-1 items-end gap-1.5 sm:mt-5 sm:gap-2">
                   {bars.map((height, index) => (
                     <span
                       key={index}
@@ -91,9 +91,9 @@ export default function ScrollShowcase() {
                   ))}
                 </div>
               </div>
-              <div className="hidden rounded-2xl border border-white/10 bg-white/[0.035] p-5 sm:block">
+              <div className="hidden rounded-2xl border border-white/10 bg-white/[0.035] p-4 sm:block">
                 <p className="text-sm font-semibold">Priorities</p>
-                <div className="mt-6 space-y-4 text-xs text-slate-400">
+                <div className="mt-5 space-y-3 text-xs text-slate-400">
                   <p className="flex items-center gap-2"><Check className="size-4 text-emerald-400" /> Review requests</p>
                   <p className="flex items-center gap-2"><Check className="size-4 text-emerald-400" /> Update schedules</p>
                   <p className="flex items-center gap-2"><span className="size-4 rounded-full border border-amber-400/70" /> Finalize report</p>

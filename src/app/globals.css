@@ -115,6 +115,64 @@ section[id] {
   animation: float-slow 7s ease-in-out infinite;
 }
 
+.showcase-scroll {
+  position: relative;
+  height: max(150svh, 950px);
+  margin-bottom: clamp(5rem, 7vw, 7rem);
+}
+
+.showcase-stage {
+  position: sticky;
+  top: 72px;
+  height: calc(100svh - 72px);
+}
+
+.showcase-card {
+  height: min(68svh, 600px);
+  min-height: 460px;
+}
+
+.showcase-scroll[data-static="true"] {
+  height: auto;
+  margin-bottom: 3rem;
+  padding-block: 4rem;
+}
+
+.showcase-scroll[data-static="true"] .showcase-stage {
+  position: relative;
+  top: auto;
+  height: auto;
+}
+
+.showcase-scroll[data-static="true"] .showcase-card {
+  height: 520px;
+  min-height: 0;
+}
+
+@media (max-width: 767px), (max-height: 759px) {
+  .showcase-scroll {
+    height: auto;
+    margin-bottom: 3rem;
+    padding-block: 4rem;
+  }
+
+  .showcase-stage {
+    position: relative;
+    top: auto;
+    height: auto;
+  }
+
+  .showcase-card {
+    height: 520px;
+    min-height: 0;
+    transform: none !important;
+  }
+
+  .showcase-stage > div:first-child {
+    transform: none !important;
+  }
+}
+
 @keyframes float-slow {
   50% {
     transform: translateY(-12px) rotate(3deg);

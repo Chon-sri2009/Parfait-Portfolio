@@ -24,8 +24,8 @@ export function ContainerScroll({ titleComponent, children }: ContainerScrollPro
   const titleY = useTransform(smoothProgress, [0, 0.72], [20, -12]);
 
   return (
-    <div ref={containerRef} className={reduceMotion ? "relative py-16 sm:py-24" : "relative h-[150vh] min-h-[950px]"}>
-      <div className={`${reduceMotion ? "relative" : "sticky top-[72px] h-[calc(100vh-72px)]"} flex flex-col items-center justify-center gap-7 px-1 sm:gap-10`}>
+    <div ref={containerRef} className="showcase-scroll" data-static={reduceMotion}>
+      <div className="showcase-stage flex flex-col items-center justify-center gap-6 px-1 sm:gap-8">
         <motion.div
           className="relative z-10 w-full text-center"
           style={reduceMotion ? undefined : { y: titleY }}
@@ -36,7 +36,7 @@ export function ContainerScroll({ titleComponent, children }: ContainerScrollPro
         <div className="w-full max-w-6xl" style={{ perspective: "1600px" }}>
           <motion.div
             data-scroll-card
-            className="relative mx-auto h-[54vh] min-h-[360px] max-h-[590px] w-full will-change-transform sm:h-[62vh]"
+            className="showcase-card relative mx-auto w-full will-change-transform"
             style={
               reduceMotion
                 ? undefined

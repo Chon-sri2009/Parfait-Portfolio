@@ -60,8 +60,9 @@ export default function Awards() {
                 </div>
 
                 <div className="relative my-auto py-12">
-                  <p className="font-display text-[clamp(7rem,18vw,13rem)] font-black leading-[0.8] tracking-[-0.13em] text-amber-300" aria-hidden="true">
-                    03<span className="ml-2 align-top text-[0.16em] tracking-normal">rd</span>
+                  <p className="font-display flex items-start gap-2 text-amber-300" aria-hidden="true">
+                    <span className="block text-[clamp(6rem,17vw,11rem)] font-black leading-[0.78] tracking-[-0.1em]">03</span>
+                    <span className="mt-2 block text-[clamp(1.25rem,3vw,2rem)] font-bold leading-none tracking-normal sm:mt-4">rd</span>
                   </p>
                   <h3 className="font-display mt-8 text-3xl font-bold tracking-tight sm:text-4xl">Third place, regional.</h3>
                   <p className="mt-4 max-w-md text-base leading-7 text-zinc-300">{achievement.description}</p>
