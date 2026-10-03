@@ -100,7 +100,7 @@ export function renderCanvas(canvas: HTMLCanvasElement, target: HTMLElement) {
 
   const resize = () => {
     const bounds = target.getBoundingClientRect();
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
     width = bounds.width;
     height = bounds.height;
     canvas.width = Math.round(width * ratio);
@@ -139,6 +139,12 @@ export function renderCanvas(canvas: HTMLCanvasElement, target: HTMLElement) {
   };
 
   const move = (event: PointerEvent) => {
+    if (event.target instanceof Element && event.target.closest("[data-portrait-frame]")) {
+      if (frame) stop();
+      if (lines.length) lines = [];
+      return;
+    }
+
     const bounds = target.getBoundingClientRect();
     pointer.x = event.clientX - bounds.left;
     pointer.y = event.clientY - bounds.top;

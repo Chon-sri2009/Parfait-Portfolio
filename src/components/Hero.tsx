@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight, Braces, BriefcaseBusiness, Database, GitBranch, Medal, Pause, Play, Workflow } from "lucide-react";
 import { capabilitiesData, profile } from "@/lib/data";
 import { renderCanvas } from "@/components/ui/canvas";
@@ -18,9 +18,6 @@ export default function Hero() {
   const reduceMotion = useHydratedReducedMotion();
   const [tickerPaused, setTickerPaused] = useState(false);
   const tickerPlaying = !reduceMotion && !tickerPaused;
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 125]);
-
   useEffect(() => {
     if (reduceMotion || !heroRef.current || !canvasRef.current) return;
     return renderCanvas(canvasRef.current, heroRef.current);
@@ -77,7 +74,13 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          <motion.div className="relative mx-auto w-full max-w-[530px]" style={reduceMotion ? undefined : { y: portraitY }}>
+          <motion.div
+            data-portrait-frame
+            className="relative mx-auto w-full max-w-[530px]"
+            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.65, delay: reduceMotion ? 0 : 0.12, ease: [0.22, 1, 0.36, 1] }}
+          >
             <div className="absolute -inset-4 rotate-[5deg] rounded-[2.5rem] border-2 border-violet-500/35 dark:border-lime-300/35" aria-hidden="true" />
             <div className="absolute -inset-4 -rotate-[4deg] rounded-[2.5rem] bg-violet-500/10 dark:bg-lime-300/8" aria-hidden="true" />
             <figure className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#261e31] shadow-[0_40px_100px_rgba(24,13,44,0.32)]">
@@ -99,7 +102,7 @@ export default function Hero() {
                 <span className="sr-only">Third place.</span>
               </figcaption>
             </figure>
-            <div className="float-slow absolute -right-4 top-8 rounded-2xl border border-white/25 bg-[#191621] px-5 py-4 text-white shadow-2xl sm:-right-8 sm:top-12" aria-hidden="true">
+            <div className="absolute -right-4 top-8 rounded-2xl border border-white/25 bg-[#191621] px-5 py-4 text-white shadow-2xl sm:-right-8 sm:top-12" aria-hidden="true">
               <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-lime-300">Achievement unlocked</p>
               <p className="font-display mt-1 text-lg font-bold">3rd place ↗</p>
             </div>

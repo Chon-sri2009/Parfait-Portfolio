@@ -111,10 +111,6 @@ section[id] {
   }
 }
 
-.float-slow {
-  animation: float-slow 7s ease-in-out infinite;
-}
-
 .showcase-scroll {
   position: relative;
   height: max(150svh, 950px);
@@ -170,12 +166,6 @@ section[id] {
 
   .showcase-stage > div:first-child {
     transform: none !important;
-  }
-}
-
-@keyframes float-slow {
-  50% {
-    transform: translateY(-12px) rotate(3deg);
   }
 }
 
@@ -246,8 +236,7 @@ section[id] {
     scroll-behavior: auto;
   }
 
-  html:not([data-motion="on"]) .ticker-track,
-  html:not([data-motion="on"]) .float-slow {
+  html:not([data-motion="on"]) .ticker-track {
     animation: none;
   }
 
@@ -271,8 +260,7 @@ html[data-motion="off"] {
   scroll-behavior: auto;
 }
 
-html[data-motion="off"] .ticker-track,
-html[data-motion="off"] .float-slow {
+html[data-motion="off"] .ticker-track {
   animation: none;
 }
 
