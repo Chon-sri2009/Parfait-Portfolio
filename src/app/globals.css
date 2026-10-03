@@ -137,7 +137,7 @@ section[id] {
     hsl(var(--hue) 100% 70% / 0.1), transparent
   );
   background-color: var(--backdrop);
-  background-attachment: fixed;
+  background-attachment: scroll;
   border: var(--border-size) solid var(--backup-border);
 }
 
@@ -150,7 +150,7 @@ section[id] {
   inset: calc(var(--border-size) * -1);
   border: var(--border-size) solid transparent;
   border-radius: calc(var(--radius) * 1px);
-  background-attachment: fixed;
+  background-attachment: scroll;
   background-repeat: no-repeat;
   mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
   mask-clip: padding-box, border-box;
@@ -184,31 +184,51 @@ section[id] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
+  html:not([data-motion="on"]) {
     scroll-behavior: auto;
   }
 
-  .ticker-track,
-  .float-slow {
+  html:not([data-motion="on"]) .ticker-track,
+  html:not([data-motion="on"]) .float-slow {
     animation: none;
   }
 
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion="on"]) *,
+  html:not([data-motion="on"]) *::before,
+  html:not([data-motion="on"]) *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
 
-  .ticker-track[data-playing="true"] {
-    animation: ticker 50s linear infinite !important;
-  }
-
-  [data-glow-card],
-  [data-glow-card]::before,
-  [data-glow-card]::after {
+  html:not([data-motion="on"]) [data-glow-card],
+  html:not([data-motion="on"]) [data-glow-card]::before,
+  html:not([data-motion="on"]) [data-glow-card]::after {
     background-attachment: scroll;
   }
+}
+
+html[data-motion="off"] {
+  scroll-behavior: auto;
+}
+
+html[data-motion="off"] .ticker-track,
+html[data-motion="off"] .float-slow {
+  animation: none;
+}
+
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+}
+
+html[data-motion="off"] [data-glow-card],
+html[data-motion="off"] [data-glow-card]::before,
+html[data-motion="off"] [data-glow-card]::after {
+  background-attachment: scroll;
 }

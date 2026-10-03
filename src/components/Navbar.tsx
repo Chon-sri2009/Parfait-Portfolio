@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
-import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowUpRight, Menu, Moon, Pause, Play, Sun, X } from "lucide-react";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { setMotionEnabled, useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
 
 const navItems = [
   { label: "Work", id: "work" },
@@ -17,6 +18,11 @@ export default function Navbar() {
   const [activeId, setActiveId] = useState("home");
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const { resolvedTheme, setTheme } = useTheme();
+  const reduceMotion = useHydratedReducedMotion();
+
+  useEffect(() => {
+    document.documentElement.dataset.motion = reduceMotion ? "off" : "on";
+  }, [reduceMotion]);
 
   useEffect(() => {
     const sections = ["home", ...navItems.map((item) => item.id)]
@@ -102,6 +108,17 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setMotionEnabled(reduceMotion)}
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-black/10 bg-white/40 px-3 text-xs font-bold transition-colors hover:border-violet-400 dark:border-white/15 dark:bg-white/5 dark:hover:border-lime-300"
+            aria-label={reduceMotion ? "Turn on site animations" : "Turn off site animations"}
+            aria-pressed={!reduceMotion}
+            title={reduceMotion ? "Turn on animations" : "Turn off animations"}
+          >
+            {reduceMotion ? <Play className="size-4" aria-hidden="true" /> : <Pause className="size-4" aria-hidden="true" />}
+            <span className="hidden xl:inline">{reduceMotion ? "Motion off" : "Motion on"}</span>
+          </button>
           <button
             type="button"
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}

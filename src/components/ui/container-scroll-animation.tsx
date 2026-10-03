@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
 
 interface ContainerScrollProps {
@@ -16,15 +16,16 @@ export function ContainerScroll({ titleComponent, children }: ContainerScrollPro
     target: containerRef,
     offset: ["start start", "end end"],
   });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.22 });
 
-  const rotateX = useTransform(scrollYProgress, [0, 0.72], [14, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.72], [0.86, 1]);
-  const cardY = useTransform(scrollYProgress, [0, 0.72], [64, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.72], [24, -16]);
+  const rotateX = useTransform(smoothProgress, [0, 0.72], [11, 0]);
+  const scale = useTransform(smoothProgress, [0, 0.72], [0.9, 1]);
+  const cardY = useTransform(smoothProgress, [0, 0.72], [44, 0]);
+  const titleY = useTransform(smoothProgress, [0, 0.72], [20, -12]);
 
   return (
-    <div ref={containerRef} className="relative h-[150vh] min-h-[950px]">
-      <div className="sticky top-[72px] flex h-[calc(100vh-72px)] flex-col items-center justify-center gap-7 px-1 sm:gap-10">
+    <div ref={containerRef} className={reduceMotion ? "relative py-16 sm:py-24" : "relative h-[150vh] min-h-[950px]"}>
+      <div className={`${reduceMotion ? "relative" : "sticky top-[72px] h-[calc(100vh-72px)]"} flex flex-col items-center justify-center gap-7 px-1 sm:gap-10`}>
         <motion.div
           className="relative z-10 w-full text-center"
           style={reduceMotion ? undefined : { y: titleY }}

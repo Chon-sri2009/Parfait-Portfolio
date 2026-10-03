@@ -36,22 +36,32 @@ export function GlowCard({
   customSize = false,
 }: GlowCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const syncPointer = (event: PointerEvent) => {
-      const card = cardRef.current;
-      if (!card) return;
+    const card = cardRef.current;
+    if (!card) return;
+    let frame = 0;
 
-      const { clientX: x, clientY: y } = event;
-      card.style.setProperty("--x", x.toFixed(2));
-      card.style.setProperty("--xp", (x / window.innerWidth).toFixed(2));
-      card.style.setProperty("--y", y.toFixed(2));
-      card.style.setProperty("--yp", (y / window.innerHeight).toFixed(2));
+    const syncPointer = (event: PointerEvent) => {
+      if (document.documentElement.dataset.motion === "off") return;
+      const bounds = card.getBoundingClientRect();
+      const x = event.clientX - bounds.left;
+      const y = event.clientY - bounds.top;
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        card.style.setProperty("--x", x.toFixed(2));
+        card.style.setProperty("--xp", (x / bounds.width).toFixed(2));
+        card.style.setProperty("--y", y.toFixed(2));
+        card.style.setProperty("--yp", (y / bounds.height).toFixed(2));
+        frame = 0;
+      });
     };
 
-    document.addEventListener("pointermove", syncPointer, { passive: true });
-    return () => document.removeEventListener("pointermove", syncPointer);
+    card.addEventListener("pointermove", syncPointer, { passive: true });
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      card.removeEventListener("pointermove", syncPointer);
+    };
   }, []);
 
   const { base, spread } = glowColorMap[glowColor];
@@ -69,7 +79,7 @@ export function GlowCard({
       style={style}
       className={`${customSize ? "" : `${sizeMap[size]} aspect-[3/4]`} relative grid grid-rows-[1fr_auto] gap-4 rounded-2xl p-4 shadow-[0_1rem_2rem_-1rem_black] backdrop-blur-[5px] ${className}`}
     >
-      <div ref={innerRef} data-glow-inner aria-hidden="true" />
+      <div data-glow-inner aria-hidden="true" />
       {children}
     </div>
   );

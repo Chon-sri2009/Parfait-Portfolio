@@ -7,8 +7,8 @@ const settings = {
   friction: 0.53,
   dampening: 0.045,
   tension: 0.985,
-  trails: 36,
-  size: 32,
+  trails: 22,
+  size: 25,
 };
 
 class Oscillator {
@@ -90,7 +90,6 @@ export function renderCanvas(canvas: HTMLCanvasElement, target: HTMLElement) {
   const context = canvas.getContext("2d");
   if (!context) return () => {};
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const hue = new Oscillator(255, 24, 0.008);
   const pointer: Point = { x: 0, y: 0 };
   let lines: TrailLine[] = [];
@@ -117,7 +116,7 @@ export function renderCanvas(canvas: HTMLCanvasElement, target: HTMLElement) {
 
   const draw = (now: number) => {
     frame = 0;
-    if (document.hidden || reducedMotion.matches) {
+    if (document.hidden) {
       stop();
       return;
     }
@@ -140,8 +139,6 @@ export function renderCanvas(canvas: HTMLCanvasElement, target: HTMLElement) {
   };
 
   const move = (event: PointerEvent) => {
-    if (reducedMotion.matches) return;
-
     const bounds = target.getBoundingClientRect();
     pointer.x = event.clientX - bounds.left;
     pointer.y = event.clientY - bounds.top;
@@ -160,22 +157,16 @@ export function renderCanvas(canvas: HTMLCanvasElement, target: HTMLElement) {
     if (document.hidden) stop();
   };
 
-  const handleMotionPreference = () => {
-    if (reducedMotion.matches) stop();
-  };
-
   resize();
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(target);
   target.addEventListener("pointermove", move, { passive: true });
   document.addEventListener("visibilitychange", handleVisibility);
-  reducedMotion.addEventListener("change", handleMotionPreference);
 
   return () => {
     stop();
     resizeObserver.disconnect();
     target.removeEventListener("pointermove", move);
     document.removeEventListener("visibilitychange", handleVisibility);
-    reducedMotion.removeEventListener("change", handleMotionPreference);
   };
 }

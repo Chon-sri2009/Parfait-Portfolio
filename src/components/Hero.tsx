@@ -7,7 +7,7 @@ import { ArrowDownRight, ArrowUpRight, Braces, BriefcaseBusiness, Database, GitB
 import { capabilitiesData, profile } from "@/lib/data";
 import { renderCanvas } from "@/components/ui/canvas";
 import { Reveal } from "@/components/ui/reveal";
-import { useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
+import { setMotionEnabled, useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
 
 const capabilityIcons = [Braces, Workflow, Database];
 const tickerText = "DESIGN FOR PEOPLE ✳ ENGINEER FOR PURPOSE ✳ BUILD WHAT MATTERS ✳";
@@ -16,15 +16,15 @@ export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useHydratedReducedMotion();
-  const [tickerOverride, setTickerOverride] = useState<boolean | null>(null);
-  const tickerPlaying = tickerOverride ?? !reduceMotion;
+  const [tickerPaused, setTickerPaused] = useState(false);
+  const tickerPlaying = !reduceMotion && !tickerPaused;
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const portraitY = useTransform(scrollYProgress, [0, 1], [0, 125]);
 
   useEffect(() => {
-    if (!heroRef.current || !canvasRef.current) return;
+    if (reduceMotion || !heroRef.current || !canvasRef.current) return;
     return renderCanvas(canvasRef.current, heroRef.current);
-  }, []);
+  }, [reduceMotion]);
 
   return (
     <>
@@ -124,9 +124,16 @@ export default function Hero() {
         <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-lime-300 via-lime-300/95 to-transparent" aria-hidden="true" />
         <button
           type="button"
-          onClick={() => setTickerOverride(!tickerPlaying)}
+          onClick={() => {
+            if (reduceMotion) {
+              setTickerPaused(false);
+              setMotionEnabled(true);
+            } else {
+              setTickerPaused(tickerPlaying);
+            }
+          }}
           className="absolute right-3 top-1/2 z-10 inline-flex -translate-y-1/2 items-center gap-2 rounded-full bg-[#191621] px-3 py-2 text-xs font-bold text-lime-300 shadow-lg transition hover:bg-[#322b3c] sm:right-5"
-          aria-label={tickerPlaying ? "Pause scrolling text" : "Play scrolling text"}
+          aria-label={tickerPlaying ? "Pause scrolling text" : reduceMotion ? "Turn on animations and play scrolling text" : "Play scrolling text"}
         >
           {tickerPlaying ? <Pause className="size-3.5" aria-hidden="true" /> : <Play className="size-3.5" aria-hidden="true" />}
           <span className="hidden sm:inline">{tickerPlaying ? "Pause" : "Play"}</span>
