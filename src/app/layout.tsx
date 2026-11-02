@@ -15,7 +15,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Mr.Chonlapol Srichayech | Business Software Developer",
+  title: "Mr. Chonlapol Srichayech | Business Software Developer",
   description:
     "Portfolio of an award-winning developer focused on IT software solutions for business.",
 };
@@ -27,6 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Entrance animations render hidden until JavaScript runs; show content without it. */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: "<style>[data-reveal]{opacity:1!important;transform:none!important}</style>",
+          }}
+        />
+      </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         <ThemeProvider
           attribute="class"

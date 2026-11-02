@@ -1,6 +1,6 @@
 # Chonlapol Srichayech — Portfolio
 
-A personal portfolio for Mr.Chonlapol Srichayech, focused on IT Software Solutions for Business and his third-place result at the 2026 WorldSkills Thailand Regional Competition.
+A personal portfolio for Mr. Chonlapol Srichayech, focused on IT Software Solutions for Business and his third-place result at the 2026 WorldSkills Thailand Regional Competition.
 
 ## Local development
 
