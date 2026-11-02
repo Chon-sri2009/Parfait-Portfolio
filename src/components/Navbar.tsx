@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ComponentProps } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { ArrowUpRight, Menu, Moon, Pause, Play, Sun, X } from "lucide-react";
+import { ArrowUpRight, FlaskConical, Menu, Moon, Pause, Play, Sun, X } from "lucide-react";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { setMotionEnabled, useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
 
@@ -16,11 +18,19 @@ const navItems = [
 
 const subscribeNoop = () => () => {};
 
+// Plain hash links on the home page; elsewhere a Link to "/#id", which also adds the GitHub Pages base path.
+function SectionLink({ onHome, id, ...props }: { onHome: boolean; id: string } & Omit<ComponentProps<"a">, "href">) {
+  return onHome ? <a href={`#${id}`} {...props} /> : <Link href={`/#${id}`} {...props} />;
+}
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeId, setActiveId] = useState("home");
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const { resolvedTheme, setTheme } = useTheme();
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const onLab = pathname.startsWith("/lab");
   const reduceMotion = useHydratedReducedMotion();
   // The theme is unknown on the server, so only expose its state after hydration.
   const hydrated = useSyncExternalStore(subscribeNoop, () => true, () => false);
@@ -53,7 +63,8 @@ export default function Navbar() {
       observer.disconnect();
       window.removeEventListener("hashchange", syncHash);
     };
-  }, []);
+    // The header persists across pages, so observe the sections again after returning home.
+  }, [pathname]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -80,7 +91,7 @@ export default function Navbar() {
   const closeMenuAndFocus = (id: string) => {
     setMenuOpen(false);
     setActiveId(id);
-    window.requestAnimationFrame(() => document.getElementById(id)?.focus({ preventScroll: true }));
+    if (onHome) window.requestAnimationFrame(() => document.getElementById(id)?.focus({ preventScroll: true }));
   };
 
   return (
@@ -89,7 +100,7 @@ export default function Navbar() {
         Skip to content
       </a>
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
-        <a href="#home" onClick={() => setActiveId("home")} className="group flex items-center gap-3" aria-label="Chonlapol Srichayech — back to top">
+        <SectionLink onHome={onHome} id="home" onClick={() => setActiveId("home")} className="group flex items-center gap-3" aria-label={onHome ? "Chonlapol Srichayech — back to top" : "Chonlapol Srichayech — home"}>
           <span className="font-display grid size-10 place-items-center rounded-full bg-violet-600 text-sm font-black text-white transition-transform group-hover:-rotate-12 dark:bg-lime-300 dark:text-ink">
             CS<span aria-hidden="true">.</span>
           </span>
@@ -97,20 +108,28 @@ export default function Navbar() {
             <span className="font-display block text-sm font-bold leading-none tracking-tight">Chonlapol Srichayech</span>
             <span className="mt-1 block text-[11px] font-semibold uppercase tracking-[0.2em] text-muted">Developer portfolio</span>
           </span>
-        </a>
+        </SectionLink>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
           {navItems.map((item) => (
-            <a
+            <SectionLink
               key={item.id}
-              href={`#${item.id}`}
+              onHome={onHome}
+              id={item.id}
               onClick={() => setActiveId(item.id)}
-              aria-current={activeId === item.id ? "location" : undefined}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${activeId === item.id ? "bg-violet-600/10 text-violet-700 dark:bg-white/10 dark:text-lime-300" : "text-slate-600 hover:text-violet-700 dark:text-zinc-300 dark:hover:text-lime-300"}`}
+              aria-current={onHome && activeId === item.id ? "location" : undefined}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${onHome && activeId === item.id ? "bg-violet-600/10 text-violet-700 dark:bg-white/10 dark:text-lime-300" : "text-slate-600 hover:text-violet-700 dark:text-zinc-300 dark:hover:text-lime-300"}`}
             >
               {item.label}
-            </a>
+            </SectionLink>
           ))}
+          <Link
+            href="/lab"
+            aria-current={onLab ? "page" : undefined}
+            className={`ml-1 inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${onLab ? "border-transparent bg-violet-600/10 text-violet-700 dark:bg-white/10 dark:text-lime-300" : "border-violet-600/30 text-violet-700 hover:bg-violet-600/10 dark:border-lime-300/40 dark:text-lime-300 dark:hover:bg-lime-300/10"}`}
+          >
+            <FlaskConical className="size-4" aria-hidden="true" /> Lab
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -135,12 +154,13 @@ export default function Navbar() {
             <Moon className="size-4 dark:hidden" aria-hidden="true" />
             <Sun className="hidden size-4 dark:block" aria-hidden="true" />
           </button>
-          <a
-            href="#contact"
+          <SectionLink
+            onHome={onHome}
+            id="contact"
             className="hidden items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-violet-600 sm:inline-flex dark:bg-lime-300 dark:text-ink dark:hover:bg-lime-200"
           >
             Let&apos;s connect <ArrowUpRight className="size-4" aria-hidden="true" />
-          </a>
+          </SectionLink>
           <button
             ref={menuButtonRef}
             type="button"
@@ -158,17 +178,27 @@ export default function Navbar() {
       {menuOpen && (
         <nav id="mobile-navigation" className="border-t border-line bg-background px-5 py-3 shadow-2xl md:hidden" aria-label="Mobile navigation">
           {navItems.map((item, index) => (
-            <a
+            <SectionLink
               key={item.id}
-              href={`#${item.id}`}
+              onHome={onHome}
+              id={item.id}
               onClick={() => closeMenuAndFocus(item.id)}
-              aria-current={activeId === item.id ? "location" : undefined}
-              className={`font-display flex items-center justify-between border-b border-line py-4 text-xl font-bold last:border-0 ${activeId === item.id ? "text-violet-700 dark:text-lime-300" : ""}`}
+              aria-current={onHome && activeId === item.id ? "location" : undefined}
+              className={`font-display flex items-center justify-between border-b border-line py-4 text-xl font-bold ${onHome && activeId === item.id ? "text-violet-700 dark:text-lime-300" : ""}`}
             >
               <span><span className="mr-4 text-xs font-semibold text-violet-600 dark:text-lime-300" aria-hidden="true">0{index + 1}</span>{item.label}</span>
               <ArrowUpRight className="size-5" aria-hidden="true" />
-            </a>
+            </SectionLink>
           ))}
+          <Link
+            href="/lab"
+            onClick={() => setMenuOpen(false)}
+            aria-current={onLab ? "page" : undefined}
+            className={`font-display flex items-center justify-between py-4 text-xl font-bold ${onLab ? "text-violet-700 dark:text-lime-300" : ""}`}
+          >
+            <span className="flex items-center"><FlaskConical className="mr-4 size-4 text-violet-600 dark:text-lime-300" aria-hidden="true" />Lab</span>
+            <ArrowUpRight className="size-5" aria-hidden="true" />
+          </Link>
         </nav>
       )}
       <ScrollProgress />

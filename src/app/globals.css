@@ -8,6 +8,7 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-field: var(--field);
   --color-ink: #191621;
 }
 
@@ -16,6 +17,8 @@
   --foreground: #191621;
   --muted: #655f6c;
   --line: rgba(25, 22, 33, 0.12);
+  /* Form-control borders need 3:1 against their surroundings, more than --line gives. */
+  --field: #8a8490;
   --accent: #6d3df4;
 }
 
@@ -24,12 +27,18 @@
   --foreground: #f7f4ee;
   --muted: #b5adbe;
   --line: rgba(255, 255, 255, 0.13);
+  --field: #7a7283;
   --accent: #bb9bff;
 }
 
 /* Lime surfaces stay lime in both themes, so focus rings need dark ink there. */
 .on-lime {
   --accent: #191621;
+}
+
+/* Dark result panels stay dark in both themes, so the light-mode violet ring would disappear there. */
+.on-dark {
+  --accent: #bef264;
 }
 
 * {
