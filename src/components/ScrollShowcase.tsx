@@ -1,4 +1,4 @@
-import { Activity, ArrowUpRight, BarChart3, Check, Layers3 } from "lucide-react";
+import { Activity, BarChart3, Check, Layers3 } from "lucide-react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 
 const bars = [43, 59, 51, 73, 64, 86, 72, 94, 78, 88, 82, 100];
@@ -8,11 +8,11 @@ export default function ScrollShowcase() {
     <ContainerScroll
       titleComponent={
         <div className="mx-auto max-w-3xl px-4">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-indigo-600 dark:text-indigo-300">A closer look</p>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-violet-700 dark:text-lime-300">A closer look</p>
           <h3 className="font-display mt-4 text-balance text-3xl font-semibold tracking-[-0.05em] sm:text-5xl">
             Clarity from complexity.
           </h3>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-muted sm:text-base">
             An illustrative workspace for bringing operations, people, and decisions into one clear view.
           </p>
         </div>
@@ -79,7 +79,6 @@ export default function ScrollShowcase() {
               <div className="flex min-h-0 flex-col rounded-xl border border-white/10 bg-white/[0.035] p-3 sm:rounded-2xl sm:p-4">
                 <div className="flex items-center justify-between">
                   <p className="text-[10px] font-semibold sm:text-sm">Workflow activity</p>
-                  <ArrowUpRight className="size-4 text-indigo-300" />
                 </div>
                 <div className="mt-4 flex min-h-[72px] flex-1 items-end gap-1.5 sm:mt-5 sm:gap-2">
                   {bars.map((height, index) => (

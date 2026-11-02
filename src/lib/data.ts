@@ -59,7 +59,7 @@ export const achievement = {
 };
 
 export const profile = {
-  name: "Mr.Chonlapol Srichayech",
+  name: "Mr. Chonlapol Srichayech",
   role: "Business software developer",
   portraitSrc: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/chonlapol-worldskills-2026.jpeg`,
 };

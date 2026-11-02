@@ -2,14 +2,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-ink: #191621;
+}
+
 :root {
   --background: #f2efe8;
   --foreground: #191621;
   --muted: #655f6c;
   --line: rgba(25, 22, 33, 0.12);
-  --surface: rgba(255, 255, 255, 0.78);
   --accent: #6d3df4;
-  --bronze: #a95b26;
 }
 
 .dark {
@@ -17,9 +24,12 @@
   --foreground: #f7f4ee;
   --muted: #b5adbe;
   --line: rgba(255, 255, 255, 0.13);
-  --surface: rgba(29, 25, 37, 0.76);
   --accent: #bb9bff;
-  --bronze: #efad6b;
+}
+
+/* Lime surfaces stay lime in both themes, so focus rings need dark ink there. */
+.on-lime {
+  --accent: #191621;
 }
 
 * {
@@ -82,14 +92,6 @@ section[id] {
   background-size: 24px 24px;
 }
 
-.text-balance {
-  text-wrap: balance;
-}
-
-.display-outline {
-  color: transparent;
-  -webkit-text-stroke: 1px currentColor;
-}
 
 .ticker-track {
   width: max-content;
