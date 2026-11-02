@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BarChart3, Boxes, GitBranch } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, BarChart3, Boxes, GitBranch } from "lucide-react";
 import ScrollShowcase from "@/components/ScrollShowcase";
 import { projectsData } from "@/lib/data";
 import { useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
@@ -111,6 +112,20 @@ export default function Projects() {
             );
           })}
         </div>
+
+        <Link
+          href="/lab"
+          className="group mt-6 flex flex-col gap-5 rounded-[2rem] border border-dashed border-violet-600/40 p-7 transition-colors hover:border-violet-600 hover:bg-violet-600/5 sm:flex-row sm:items-center sm:justify-between sm:p-10 dark:border-lime-300/40 dark:hover:border-lime-300 dark:hover:bg-lime-300/5"
+        >
+          <span>
+            <span className="block text-[11px] font-bold uppercase tracking-[0.2em] text-violet-700 dark:text-lime-300">Lab</span>
+            <span className="font-display mt-2 block text-2xl font-bold tracking-[-0.04em] sm:text-3xl">Don&apos;t just read about it. Try working tools.</span>
+            <span className="mt-2 block text-base text-muted">Business calculators, a task board, CSV charts and developer utilities.</span>
+          </span>
+          <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-bold text-violet-700 transition-[gap] group-hover:gap-3 dark:text-lime-300" aria-hidden="true">
+            Open the Lab <ArrowUpRight className="size-4" />
+          </span>
+        </Link>
       </div>
     </section>
   );
