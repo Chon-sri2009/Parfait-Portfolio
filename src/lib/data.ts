@@ -19,6 +19,19 @@ export const capabilitiesData = [
 export const projectsData = [
   {
     id: "01",
+    kind: "project",
+    category: "Developer tooling",
+    title: "DevPulse — Developer Dashboard",
+    description:
+      "A .NET 9 Blazor Server dashboard that brings host diagnostics, network and DNS tools, website audits, API testing, alerts, and a focus lounge with Spotify control into one workspace.",
+    technologies: [".NET 9", "Blazor Server", "C#", "JavaScript", "Docker"],
+    modules: ["Overview", "Operations", "Telemetry"],
+    accent: "lime",
+    href: "https://github.com/Chon-sri2009/Devpulse_Project_1",
+  },
+  {
+    id: "02",
+    kind: "concept",
     category: "Enterprise operations",
     title: "Nexus Core — Cloud ERP",
     description:
@@ -28,7 +41,8 @@ export const projectsData = [
     accent: "indigo",
   },
   {
-    id: "02",
+    id: "03",
+    kind: "concept",
     category: "Financial intelligence",
     title: "FinSecure Dashboard",
     description:
@@ -38,7 +52,8 @@ export const projectsData = [
     accent: "cyan",
   },
   {
-    id: "03",
+    id: "04",
+    kind: "concept",
     category: "Workflow automation",
     title: "OpsFlow Automator",
     description:
