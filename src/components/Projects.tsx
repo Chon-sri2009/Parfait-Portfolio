@@ -2,13 +2,14 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight, BarChart3, Boxes, GitBranch } from "lucide-react";
+import { Activity, ArrowUpRight, BarChart3, Boxes, GitBranch } from "lucide-react";
 import ScrollShowcase from "@/components/ScrollShowcase";
 import { projectsData } from "@/lib/data";
 import { useHydratedReducedMotion } from "@/components/ui/use-hydrated-reduced-motion";
 
-const projectIcons = [Boxes, BarChart3, GitBranch];
+const projectIcons = [Activity, Boxes, BarChart3, GitBranch];
 const accentStyles = {
+  lime: { dot: "bg-lime-400", text: "text-lime-400", glow: "bg-lime-400/20" },
   indigo: { dot: "bg-violet-500", text: "text-violet-500", glow: "bg-violet-500/20" },
   cyan: { dot: "bg-cyan-400", text: "text-cyan-400", glow: "bg-cyan-400/20" },
   amber: { dot: "bg-amber-400", text: "text-amber-400", glow: "bg-amber-400/20" },
@@ -28,21 +29,23 @@ export default function Projects() {
             </h2>
           </div>
           <p className="max-w-xl text-lg leading-8 text-muted lg:justify-self-end">
-            A set of interface concepts exploring operations, finance, and automation. They show how I think through real business workflows—not commissioned client work.
+            DevPulse is a dashboard I built and shipped. The interface concepts that follow explore operations, finance, and automation—how I think through real business workflows, not commissioned client work.
           </p>
         </div>
 
         <ScrollShowcase />
 
         <div className="mb-8 flex items-end justify-between border-b border-line pb-5">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-violet-700 dark:text-lime-300">Concept studies / 2026</p>
-          <p className="font-display text-sm font-semibold text-muted">01 — 03</p>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-violet-700 dark:text-lime-300">Projects &amp; concepts / 2026</p>
+          <p className="font-display text-sm font-semibold text-muted">01 — {String(projectsData.length).padStart(2, "0")}</p>
         </div>
 
         <div className="space-y-6">
           {projectsData.map((project, index) => {
             const Icon = projectIcons[index];
             const accent = accentStyles[project.accent as keyof typeof accentStyles];
+            const isConcept = project.kind === "concept";
+            const reversed = index % 2 === 1;
 
             return (
               <motion.article
@@ -55,7 +58,7 @@ export default function Projects() {
                 className="overflow-hidden rounded-[2rem] border border-line bg-white/65 shadow-[0_18px_70px_rgba(15,23,42,0.045)] dark:bg-[#17131d]"
               >
                 <div className="grid lg:grid-cols-[1fr_0.9fr]">
-                  <div className={`flex flex-col p-7 sm:p-10 lg:p-12 ${index === 1 ? "lg:order-2" : ""}`}>
+                  <div className={`flex flex-col p-7 sm:p-10 lg:p-12 ${reversed ? "lg:order-2" : ""}`}>
                     <div className="flex items-center justify-between gap-5">
                       <span className="inline-flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
                         <span className={`size-2 rounded-full ${accent.dot}`} aria-hidden="true" /> {project.category}
@@ -64,9 +67,20 @@ export default function Projects() {
                     </div>
 
                     <div className="my-auto py-12">
-                      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-700 dark:text-lime-300">Concept {project.id}</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-700 dark:text-lime-300">{isConcept ? `Concept ${project.id}` : "Built project"}</p>
                       <h3 className="font-display mt-3 max-w-xl text-3xl font-bold leading-tight tracking-[-0.045em] sm:text-5xl">{project.title}</h3>
                       <p className="mt-5 max-w-xl text-base leading-7 text-muted">{project.description}</p>
+                      {project.href && (
+                        <a
+                          href={project.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-violet-700 transition-[gap] hover:gap-3 dark:text-lime-300"
+                        >
+                          View source on GitHub <ArrowUpRight className="size-4" aria-hidden="true" />
+                          <span className="sr-only">(opens in a new tab)</span>
+                        </a>
+                      )}
                     </div>
 
                     <ul role="list" className="flex flex-wrap gap-2 border-t border-line pt-6" aria-label="Technologies explored">
@@ -76,7 +90,7 @@ export default function Projects() {
                     </ul>
                   </div>
 
-                  <div className={`relative min-h-[330px] overflow-hidden bg-[#100e19] p-5 sm:p-8 ${index === 1 ? "lg:order-1" : ""}`} role="img" aria-label={`${project.title} illustrative interface preview`}>
+                  <div className={`relative min-h-[330px] overflow-hidden bg-[#100e19] p-5 sm:p-8 ${reversed ? "lg:order-1" : ""}`} role="img" aria-label={`${project.title} ${isConcept ? "illustrative interface preview" : "dashboard preview"}`}>
                     <div className="fine-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
                     <div className={`pointer-events-none absolute -right-12 -top-12 size-72 rounded-full blur-[100px] ${accent.glow}`} aria-hidden="true" />
                     <div aria-hidden="true" className="relative flex h-full min-h-[280px] flex-col rounded-2xl border border-white/10 bg-[#1d1b29]/95 p-4 shadow-2xl sm:p-6">
@@ -103,7 +117,7 @@ export default function Projects() {
                         </div>
                       </div>
                       <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
-                        <span>Interface study</span>
+                        <span>{isConcept ? "Interface study" : "Live dashboard"}</span>
                       </div>
                     </div>
                   </div>
