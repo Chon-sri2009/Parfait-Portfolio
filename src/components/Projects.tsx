@@ -70,16 +70,31 @@ export default function Projects() {
                       <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-700 dark:text-lime-300">{isConcept ? `Concept ${project.id}` : "Built project"}</p>
                       <h3 className="font-display mt-3 max-w-xl text-3xl font-bold leading-tight tracking-[-0.045em] sm:text-5xl">{project.title}</h3>
                       <p className="mt-5 max-w-xl text-base leading-7 text-muted">{project.description}</p>
-                      {project.href && (
-                        <a
-                          href={project.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-violet-700 transition-[gap] hover:gap-3 dark:text-lime-300"
-                        >
-                          View source on GitHub <ArrowUpRight className="size-4" aria-hidden="true" />
-                          <span className="sr-only">(opens in a new tab)</span>
-                        </a>
+                      {(project.liveHref || project.href) && (
+                        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+                          {project.liveHref && (
+                            <a
+                              href={project.liveHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-full bg-violet-700 px-4 py-2 text-sm font-bold text-white transition-[gap] hover:gap-3 dark:bg-lime-300 dark:text-black"
+                            >
+                              Open live demo <ArrowUpRight className="size-4" aria-hidden="true" />
+                              <span className="sr-only">(opens in a new tab)</span>
+                            </a>
+                          )}
+                          {project.href && (
+                            <a
+                              href={project.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-sm font-bold text-violet-700 transition-[gap] hover:gap-3 dark:text-lime-300"
+                            >
+                              View source on GitHub <ArrowUpRight className="size-4" aria-hidden="true" />
+                              <span className="sr-only">(opens in a new tab)</span>
+                            </a>
+                          )}
+                        </div>
                       )}
                     </div>
 

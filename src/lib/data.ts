@@ -27,6 +27,7 @@ export const projectsData = [
     technologies: [".NET 9", "Blazor Server", "C#", "JavaScript", "Docker"],
     modules: ["Overview", "Operations", "Telemetry"],
     accent: "lime",
+    liveHref: "https://devpulse-project-sng7.onrender.com/",
     href: "https://github.com/Chon-sri2009/Devpulse_Project_1",
   },
   {
